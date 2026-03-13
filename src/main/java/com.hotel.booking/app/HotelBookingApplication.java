@@ -3,13 +3,13 @@ package com.hotel.booking.app;
 import com.hotel.booking.model.*;
 import com.hotel.booking.inventory.RoomInventory;
 import com.hotel.booking.service.SearchService;
+import com.hotel.booking.reservation.Reservation;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Hotel Booking Application
- * UC1 – UC4 combined: Application entry, Room modeling, Inventory, Room search
+ * UC1 – UC5 combined: Entry, Room modeling, Inventory, Search, Booking Queue
  */
 public class HotelBookingApplication {
 
@@ -41,18 +41,28 @@ public class HotelBookingApplication {
         System.out.println("\n--- Room Inventory ---");
         inventory.displayInventory();
 
-        // Example update: booking 1 single room
-        inventory.updateAvailability(singleRoom.getRoomType(), 9);
-        System.out.println("\nAfter booking 1 Single room:");
-        inventory.displayInventory();
-
         // ---------- UC4: Room Search ----------
         SearchService searchService = new SearchService(inventory);
         searchService.displayAvailableRooms(allRooms);
 
-        // Example: mark Double room as fully booked
-        inventory.updateAvailability(doubleRoom.getRoomType(), 0);
-        System.out.println("\nAfter all Double rooms are booked:");
-        searchService.displayAvailableRooms(allRooms);
+        // ---------- UC5: Booking Request Queue ----------
+        Queue<Reservation> bookingQueue = new LinkedList<>();
+
+        // Sample booking requests
+        bookingQueue.add(new Reservation("Alice", "Single"));
+        bookingQueue.add(new Reservation("Bob", "Double"));
+        bookingQueue.add(new Reservation("Charlie", "Suite"));
+        bookingQueue.add(new Reservation("David", "Single"));
+
+        System.out.println("\n--- Booking Request Queue (FIFO) ---");
+        for (Reservation res : bookingQueue) {
+            System.out.println(res);
+        }
+
+        System.out.println("\nProcessing requests in FIFO order...");
+        while (!bookingQueue.isEmpty()) {
+            Reservation res = bookingQueue.poll();
+            System.out.println("Processing reservation: " + res);
+        }
     }
 }
