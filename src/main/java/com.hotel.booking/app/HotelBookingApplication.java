@@ -3,13 +3,14 @@ package com.hotel.booking.app;
 import com.hotel.booking.model.*;
 import com.hotel.booking.inventory.RoomInventory;
 import com.hotel.booking.service.SearchService;
+import com.hotel.booking.service.BookingService;
 import com.hotel.booking.reservation.Reservation;
 
 import java.util.*;
 
 /**
  * Hotel Booking Application
- * UC1 – UC5 combined: Entry, Room modeling, Inventory, Search, Booking Queue
+ * UC1 – UC6 combined: Entry, Room modeling, Inventory, Search, Booking Queue, Allocation
  */
 public class HotelBookingApplication {
 
@@ -48,21 +49,26 @@ public class HotelBookingApplication {
         // ---------- UC5: Booking Request Queue ----------
         Queue<Reservation> bookingQueue = new LinkedList<>();
 
-        // Sample booking requests
         bookingQueue.add(new Reservation("Alice", "Single"));
         bookingQueue.add(new Reservation("Bob", "Double"));
         bookingQueue.add(new Reservation("Charlie", "Suite"));
         bookingQueue.add(new Reservation("David", "Single"));
+        bookingQueue.add(new Reservation("Eve", "Double"));
 
         System.out.println("\n--- Booking Request Queue (FIFO) ---");
         for (Reservation res : bookingQueue) {
             System.out.println(res);
         }
 
-        System.out.println("\nProcessing requests in FIFO order...");
-        while (!bookingQueue.isEmpty()) {
-            Reservation res = bookingQueue.poll();
-            System.out.println("Processing reservation: " + res);
-        }
+        // ---------- UC6: Reservation Confirmation & Room Allocation ----------
+        BookingService bookingService = new BookingService(inventory);
+        System.out.println("\n--- Processing Reservations ---");
+        bookingService.processReservations(bookingQueue);
+
+        System.out.println("\n--- Updated Room Inventory After Allocation ---");
+        inventory.displayInventory();
+
+        System.out.println("\n--- Search Available Rooms After Allocation ---");
+        searchService.displayAvailableRooms(allRooms);
     }
 }
