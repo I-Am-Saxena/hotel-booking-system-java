@@ -1,14 +1,7 @@
 package com.hotel.booking.app;
 
-/**
- * Hotel Booking Application Entry Point
- *
- * This class represents the starting point of the application.
- * The JVM invokes the main() method to start execution.
- *
- * @author Lakshmi
- * @version 1.0
- */
+import com.hotel.booking.model.*;
+
 public class HotelBookingApplication {
 
     public static void main(String[] args) {
@@ -18,5 +11,13 @@ public class HotelBookingApplication {
         System.out.println(" Application Version : v1.0 ");
         System.out.println("=================================");
 
+        Room singleRoom = new SingleRoom(50);
+        Room doubleRoom = new DoubleRoom(80);
+        Room suiteRoom = new SuiteRoom(150);
+
+        System.out.println("\nAvailable Rooms:");
+        System.out.println(singleRoom.getRoomDetails());
+        System.out.println(doubleRoom.getRoomDetails());
+        System.out.println(suiteRoom.getRoomDetails());
     }
 }
