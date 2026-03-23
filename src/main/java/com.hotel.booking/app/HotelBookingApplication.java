@@ -2,6 +2,8 @@ package com.hotel.booking.app;
 
 import com.hotel.booking.model.*;
 import com.hotel.booking.inventory.RoomInventory;
+import com.hotel.booking.service.addon.*;
+import com.hotel.booking.service.history.*;
 
 public class HostelBookingApplication {
 
@@ -34,5 +36,41 @@ public class HostelBookingApplication {
         inventory.updateAvailability(singleRoom.getRoomType(), 9);
         System.out.println("\nAfter booking 1 Single room:");
         inventory.displayInventory();
+
+        // ==============================
+        // UC7: Add-On Services
+        // ==============================
+
+        System.out.println("\n=== Add-On Services Demo ===");
+
+        AddOnServiceManager addOnManager = new AddOnServiceManager();
+        String reservationId = "R001";
+
+        addOnManager.addService(reservationId, new AddOnService("Breakfast", 20));
+        addOnManager.addService(reservationId, new AddOnService("Airport Pickup", 50));
+
+        System.out.println("Services for Reservation " + reservationId + ":");
+        for (AddOnService service : addOnManager.getServices(reservationId)) {
+            System.out.println(service);
+        }
+
+        System.out.println("Total Add-On Cost: $" +
+                addOnManager.calculateTotalCost(reservationId));
+
+        // ==============================
+        // UC8: Booking History
+        // ==============================
+
+        BookingHistory bookingHistory = new BookingHistory();
+
+        // Dummy reservations (since your earlier UC creates them)
+        Reservation r1 = new Reservation("R001", "Single");
+        Reservation r2 = new Reservation("R002", "Double");
+
+        bookingHistory.addReservation(r1);
+        bookingHistory.addReservation(r2);
+
+        BookingReportService reportService = new BookingReportService();
+        reportService.printReport(bookingHistory);
     }
 }
