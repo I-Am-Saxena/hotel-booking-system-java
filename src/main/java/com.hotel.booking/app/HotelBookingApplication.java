@@ -2,6 +2,7 @@ package com.hotel.booking.app;
 
 import com.hotel.booking.model.*;
 import com.hotel.booking.inventory.RoomInventory;
+import com.hotel.booking.service.addon.*;
 
 public class HostelBookingApplication {
 
@@ -34,5 +35,31 @@ public class HostelBookingApplication {
         inventory.updateAvailability(singleRoom.getRoomType(), 9);
         System.out.println("\nAfter booking 1 Single room:");
         inventory.displayInventory();
+
+        // ==============================
+        // UC7: Add-On Services
+        // ==============================
+
+        System.out.println("\n=== Add-On Services Demo ===");
+
+        AddOnServiceManager addOnManager = new AddOnServiceManager();
+
+        // Simulated reservation ID
+        String reservationId = "R001";
+
+        // Add services
+        addOnManager.addService(reservationId, new AddOnService("Breakfast", 20));
+        addOnManager.addService(reservationId, new AddOnService("Airport Pickup", 50));
+        addOnManager.addService(reservationId, new AddOnService("Extra Bed", 30));
+
+        // Display services
+        System.out.println("Services for Reservation " + reservationId + ":");
+        for (AddOnService service : addOnManager.getServices(reservationId)) {
+            System.out.println(service);
+        }
+
+        // Total cost calculation
+        double totalCost = addOnManager.calculateTotalCost(reservationId);
+        System.out.println("Total Add-On Cost: $" + totalCost);
     }
 }
